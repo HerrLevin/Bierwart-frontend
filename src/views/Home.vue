@@ -2,7 +2,7 @@
   <div class="home">
     <div class="row g-2">
       <div class="col-3 mx-auto" v-for="user in users" :key="user.id">
-        <UserCard :credit="user.credit" :name="user.name" :comment="user.comment"/>
+        <UserCard :credit="user.credit" :name="user.name" :comment="user.comment" :id="user.id"/>
       </div>
     </div>
   </div>
