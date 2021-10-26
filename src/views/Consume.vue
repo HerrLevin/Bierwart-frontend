@@ -3,11 +3,11 @@
     <div class="row">
       <div class="col row g-2">
         <div v-for="beverage in beverages" :key="beverage.id" class="col-2 mx-auto">
-          <DrinkCard @click="showCheckout(beverage)" :beverage="beverage"></DrinkCard>
+          <DrinkCard @click="clickButton(beverage)" :beverage="beverage"></DrinkCard>
         </div>
       </div>
       <div v-if="show" class="col-lg-4 mt-3 col-md-6">
-        <ConsumeCard v-on:close="showCheckout" :beverage="selectedBeverage"></ConsumeCard>
+        <ConsumeCard v-on:close="hideCheckout" v-on:buy="goHome" :beverage="selectedBeverage" ref="consume"></ConsumeCard>
       </div>
     </div>
 
@@ -49,9 +49,22 @@ export default {
     }
   },
   methods: {
-    showCheckout(beverage) {
-      this.selectedBeverage = beverage;
+    clickButton(beverage){
+      if (this.selectedBeverage === beverage) {
+        this.$refs.consume.buy(1);
+        this.goHome();
+      } else {
+        this.selectedBeverage = beverage;
+        this.show = true;
+      }
+    },
+    hideCheckout() {
       this.show = !this.show;
+    },
+    goHome() {
+      this.hideCheckout();
+      this.selectedBeverage = null;
+      this.$router.push("/");
     }
   }
 }

@@ -22,7 +22,7 @@
           <button class="btn btn-outline-danger btn-lg w-100" @click="$emit('close')">Abbrechen</button>
         </div>
         <div class="col-8">
-          <button class="btn btn-success btn-lg w-100">Saufen!</button>
+          <button class="btn btn-success btn-lg w-100" @click="buy(amount)">Saufen!</button>
         </div>
       </div>
 
@@ -50,6 +50,10 @@ export default {
       if (this.amount > 1) {
         this.amount--;
       }
+    },
+    buy(amount) {
+      alert(amount + " Kaufen");
+      this.$emit("buy");
     }
   }
 }
