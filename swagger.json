@@ -1,0 +1,437 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Bierwart API",
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/"
+        }
+    ],
+    "paths": {
+        "/accountbalances": {
+            "get": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Returns all account balances with deposit/withdrawal-sum and consumption",
+                "operationId": "getAccountBalances",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "result": {
+                                        "summary": "An result object.",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "konsum": 2100,
+                                                    "konto": 900,
+                                                    "ist": -1200,
+                                                    "id_account": 1
+                                                },
+                                                {
+                                                    "konsum": 350,
+                                                    "konto": 500,
+                                                    "ist": 150,
+                                                    "id_account": 2
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/createAccountMovement": {
+            "post": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "A user deposits or withdraws money from their account",
+                "operationId": "createAccountMovement",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_account",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "id_account": {
+                                        "description": "id of account",
+                                        "type": "integer"
+                                    },
+                                    "amount": {
+                                        "description": "money to be transfered",
+                                        "type": "integer"
+                                    },
+                                    "is_deposit": {
+                                        "description": "depositing money?",
+                                        "type": "boolean",
+                                        "default": "false"
+                                    },
+                                    "comment": {
+                                        "description": "comment to be added to transfer",
+                                        "type": "string",
+                                        "default": null
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/drinksoverview": {
+            "get": {
+                "tags": [
+                    "Beverage"
+                ],
+                "summary": "returns a list of all drinks in the database",
+                "operationId": "getDrinksOverview",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "drink id",
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "name": {
+                                                        "description": "Drink name",
+                                                        "type": "string",
+                                                        "example": "Iso Sport"
+                                                    },
+                                                    "size": {
+                                                        "description": "Drink size in milliliters",
+                                                        "type": "integer",
+                                                        "example": 500
+                                                    },
+                                                    "price": {
+                                                        "description": "Drink price in €-cents",
+                                                        "type": "integer",
+                                                        "example": 50
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orderBeverage": {
+            "post": {
+                "tags": [
+                    "Beverage"
+                ],
+                "summary": "A user consumes or returns one or more drinks",
+                "operationId": "orderBeverage",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_user",
+                                    "id_beverage",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "id_user": {
+                                        "description": "id of user",
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "id_beverage": {
+                                        "description": "which kind of drink should be moved?",
+                                        "type": "boolean",
+                                        "example": "1"
+                                    },
+                                    "quantity": {
+                                        "description": "how many drinks should be moved?",
+                                        "type": "integer",
+                                        "example": "5"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/createBeverage": {
+            "post": {
+                "tags": [
+                    "Beverage"
+                ],
+                "summary": "An administrator creates a new drink of a drink type",
+                "description": "Ein Administrator legt ein neues Getränk eines Getränketyps an",
+                "operationId": "createNewBeverage",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_drink_type",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "id_drink_type": {
+                                        "description": "id of drink type",
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "name": {
+                                        "description": "Name of the drink",
+                                        "type": "string",
+                                        "example": "Duff Beer"
+                                    },
+                                    "size": {
+                                        "description": "Size of this drink in milliliters",
+                                        "type": "integer",
+                                        "example": "330"
+                                    },
+                                    "calories": {
+                                        "description": "Energy of the Drink in kcal/100g",
+                                        "type": "integer",
+                                        "default": 0,
+                                        "example": 42
+                                    },
+                                    "alcohol": {
+                                        "description": "Alcohol amount in one-tenth of a percent by volume (‰). [We're using integers. We hate comma. Deal with it!]",
+                                        "type": "integer",
+                                        "default": 0,
+                                        "example": 45
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "auth": []
+                    }
+                ]
+            }
+        },
+        "/createDrinkType": {
+            "post": {
+                "tags": [
+                    "Beverage"
+                ],
+                "summary": "An administrator creates a new drink type (e.g. Softdrink) with a fixed price",
+                "description": "Ein Administrator legt einen neuen Getränketyp (bspw. Softdrink) mit einem Preis an",
+                "operationId": "createNewDrinkType",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the drinktype ",
+                                        "type": "string",
+                                        "example": "Beer"
+                                    },
+                                    "price": {
+                                        "description": "Price of this type in €-cents",
+                                        "type": "integer",
+                                        "example": "100"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "auth": []
+                    }
+                ]
+            }
+        },
+        "/": {
+            "get": {
+                "tags": [
+                    "Bierwart"
+                ],
+                "summary": "Bier Bier Bier Bier!",
+                "operationId": "getBierwartHelloWorld",
+                "responses": {
+                    "200": {
+                        "description": "AOK"
+                    }
+                }
+            }
+        },
+        "/useroverview": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "returns a list of all users in the database",
+                "operationId": "getUserOverview",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Id of user",
+                                                        "type": "integer",
+                                                        "example": "1"
+                                                    },
+                                                    "name": {
+                                                        "description": "Name of user",
+                                                        "type": "string",
+                                                        "example": "Duff Man"
+                                                    },
+                                                    "role": {
+                                                        "description": "role of a user",
+                                                        "type": "string",
+                                                        "example": "resident"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/createUser": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "An administrator adds a user and creates an account, if wanted",
+                "description": "Füge einen Nutzer hinzu und erstelle einen passenden Account, falls gewünscht",
+                "operationId": "createNewUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "id_role"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of user ",
+                                        "type": "string",
+                                        "example": "Kearney Zzyzwicz"
+                                    },
+                                    "id_role": {
+                                        "description": "id of the role the user should be added to",
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "mail": {
+                                        "description": "E-Mail address for the user",
+                                        "type": "string",
+                                        "example": "mail@example.com"
+                                    },
+                                    "admin": {
+                                        "description": "Grant this user admin rights",
+                                        "type": "boolean",
+                                        "example": "false"
+                                    },
+                                    "id_account": {
+                                        "description": "If supplied, the newly created user's actions get charged to this account. If empty, a new (personal) account is created. Use this, if you want to create a guest-account for regular user.",
+                                        "type": "integer",
+                                        "example": "3"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                },
+                "security": [
+                    {
+                        "auth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "auth": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        }
+    }
+}

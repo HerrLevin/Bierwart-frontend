@@ -2,7 +2,7 @@
   <div class="home">
     <div class="row g-2">
       <div class="col-3 mx-auto" v-for="user in users" :key="user.id">
-        <UserCard :credit="user.credit" :name="user.name" :comment="user.comment" :id="user.id"/>
+        <UserCard :credit="user.ist" :name="user.name" :comment="user.role" :id="user.id"/>
       </div>
     </div>
   </div>
@@ -11,6 +11,8 @@
 <script>
 // @ is an alias to /src
 import UserCard from "../components/UserCard";
+import SwaggerClient from 'swagger-client';
+import spec from "../../swagger.json";
 
 export default {
   name: 'Home',
@@ -19,188 +21,208 @@ export default {
   },
   data() {
     return {
-      users: [{
+      users: []
+    };
+  },
+  methods: {
+    fetchDemoDate() {
+      this.users = [{
         "id": 1,
         "name": "Ronald Guinnane",
-        "credit": 1991,
-        "comment": null,
-        "pin": true
+        "ist": 1991,
+        "role": null
       }, {
         "id": 2,
         "name": "Brigham Filde",
-        "credit": 575,
-        "comment": null,
-        "pin": true
+        "ist": 575,
+        "role": null
       }, {
         "id": 3,
         "name": "Vere Beddon",
-        "credit": 1128,
-        "comment": null,
-        "pin": true
+        "ist": 1128,
+        "role": null
       }, {
         "id": 4,
         "name": "Candi Nend",
-        "credit": 1950,
-        "comment": null,
+        "ist": 1950,
+        "role": null,
         "pin": false
       }, {
         "id": 5,
         "name": "Balduin Corpe",
-        "credit": -1626,
-        "comment": null,
-        "pin": true
+        "ist": -1626,
+        "role": null
       }, {
         "id": 6,
         "name": "Tanner Candish",
-        "credit": 769,
-        "comment": null,
+        "ist": 769,
+        "role": null,
         "pin": false
       }, {
         "id": 7,
         "name": "Marissa Yallowley",
-        "credit": 1352,
-        "comment": null,
-        "pin": true
+        "ist": 1352,
+        "role": null
       }, {
         "id": 8,
         "name": "Carlita Cawood",
-        "credit": -703,
-        "comment": null,
+        "ist": -703,
+        "role": null,
         "pin": false
       }, {
         "id": 9,
         "name": "Onida Station",
-        "credit": 1454,
-        "comment": null,
-        "pin": true
+        "ist": 1454,
+        "role": null
       }, {
         "id": 10,
         "name": "Morrie Lober",
-        "credit": 2709,
-        "comment": null,
-        "pin": true
+        "ist": 2709,
+        "role": null
       }, {
         "id": 11,
         "name": "Trevor McNeely",
-        "credit": 840,
-        "comment": "Alt Herren",
+        "ist": 840,
+        "role": "Alt Herren",
         "pin": false
       }, {
         "id": 12,
         "name": "Lauraine Puddifer",
-        "credit": -137,
-        "comment": null,
-        "pin": true
+        "ist": -137,
+        "role": null
       }, {
         "id": 13,
         "name": "Jarred Gavrielli",
-        "credit": 2816,
-        "comment": null,
+        "ist": 2816,
+        "role": null,
         "pin": false
       }, {
         "id": 14,
         "name": "Rosalie Pear",
-        "credit": 181,
-        "comment": null,
+        "ist": 181,
+        "role": null,
         "pin": false
       }, {
         "id": 15,
         "name": "Emory Dankersley",
-        "credit": 2931,
-        "comment": null,
-        "pin": true
+        "ist": 2931,
+        "role": null
       }, {
         "id": 16,
         "name": "Myriam Houlridge",
-        "credit": 479,
-        "comment": "Alt Herren",
-        "pin": true
+        "ist": 479,
+        "role": "Alt Herren"
       }, {
         "id": 17,
         "name": "Stephie Gornal",
-        "credit": 1556,
-        "comment": null,
+        "ist": 1556,
+        "role": null,
         "pin": false
       }, {
         "id": 18,
         "name": "Curr Westgarth",
-        "credit": 1712,
-        "comment": "Gast",
-        "pin": true
+        "ist": 1712,
+        "role": "Gast"
       }, {
         "id": 19,
         "name": "Charity Crawley",
-        "credit": 2446,
-        "comment": "Gast",
+        "ist": 2446,
+        "role": "Gast",
         "pin": false
       }, {
         "id": 20,
         "name": "Bernetta MacCahey",
-        "credit": 782,
-        "comment": "Gast",
+        "ist": 782,
+        "role": "Gast",
         "pin": false
       }, {
         "id": 21,
         "name": "Virgina Jaksic",
-        "credit": 234,
-        "comment": "Gast",
-        "pin": true
+        "ist": 234,
+        "role": "Gast"
       }, {
         "id": 22,
         "name": "Rowland Habgood",
-        "credit": 2244,
-        "comment": null,
-        "pin": true
+        "ist": 2244,
+        "role": null
       }, {
         "id": 23,
         "name": "Elisha Petegrew",
-        "credit": 866,
-        "comment": null,
-        "pin": true
+        "ist": 866,
+        "role": null
       }, {
         "id": 24,
         "name": "Feliza Boyson",
-        "credit": 593,
-        "comment": null,
-        "pin": true
+        "ist": 593,
+        "role": null
       }, {
         "id": 25,
         "name": "Maryann Lawson",
-        "credit": 2819,
-        "comment": "Alt Herren",
-        "pin": true
+        "ist": 2819,
+        "role": "Alt Herren"
       }, {
         "id": 26,
         "name": "Dore Grishakov",
-        "credit": 175,
-        "comment": "Gast",
+        "ist": 175,
+        "role": "Gast",
         "pin": false
       }, {
         "id": 27,
         "name": "Daune Ioselev",
-        "credit": 204,
-        "comment": null,
-        "pin": true
+        "ist": 204,
+        "role": null
       }, {
         "id": 28,
         "name": "Corabelle Duncanson",
-        "credit": 124,
-        "comment": null,
+        "ist": 124,
+        "role": null,
         "pin": false
       }, {
         "id": 29,
         "name": "Axel Kaman",
-        "credit": 2504,
-        "comment": "Gast",
+        "ist": 2504,
+        "role": "Gast",
         "pin": false
       }, {
         "id": 30,
         "name": "Tammie Upcott",
-        "credit": 2769,
-        "comment": null,
+        "ist": 2769,
+        "role": null,
         "pin": false
-      }]
-    };
+      }];
+    },
+    fetchData() {
+      new SwaggerClient({ spec })
+          .then(client => client.apis.User.getUserOverview()
+          .then(data => {
+            this.users = data.body.data;
+          }));
+
+      new SwaggerClient({ spec })
+          .then(client => client.apis.Accounts.getAccountBalances()
+          .then(data => {
+            let arr2 = data.body.data;
+
+            let merged = [];
+
+            for(let i=0; i<this.users.length; i++) {
+              merged.push({
+                ...this.users[i],
+                ...(arr2.find((itmInner) => itmInner.id_account === this.users[i].id))}
+              );
+            }
+
+            this.users = merged
+          }));
+    }
+  },
+  created() {
+    // Demo
+    if (process.env.VUE_DEMO) {
+      this.fetchDemoDate();
+    } else {
+      this.fetchData();
+    }
   }
 };
 </script>
