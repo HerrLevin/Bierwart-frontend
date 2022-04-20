@@ -1,7 +1,7 @@
 <template>
   <div v-if="beverage" class="my-3 p-3 bg-dark rounded shadow-sm w-100" @click="drink">
     <h3 class="pb-2 mb-0">{{ beverage.name }}</h3>
-    <h4 class="text-muted">{{ beverage.size }}</h4>
+    <h4 class="text-muted">{{ beverage.size / 1000 }} l</h4>
     <h4>{{ this.euros(beverage.price) }} €</h4>
     <form>
       <div class="input-group mb-3">
@@ -31,9 +31,12 @@
 </template>
 
 <script>
+import SwaggerClient from "swagger-client";
+import spec from "../../swagger.json";
+
 export default {
   name: "ConsumeCard",
-  props: ["beverage"],
+  props: ["beverage", "userId"],
   data() {
     return {
       amount: 1
@@ -53,6 +56,24 @@ export default {
     },
     buy(amount) {
       alert(amount + " Kaufen");
+
+      new SwaggerClient({ spec })
+          .then(
+              (client) => {
+                client
+                    .apis
+                    .Beverage
+                    .orderBeverage({}, {
+                      requestBody: {
+                        id_user: 1,
+                        id_beverage: 1,
+                        quantity: 1
+                      }
+                    })
+                    .then(data => {
+                      console.log(data.body)
+                    });
+              });
       this.$emit("buy");
     }
   }

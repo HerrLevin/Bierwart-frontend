@@ -174,7 +174,7 @@
                                     },
                                     "id_beverage": {
                                         "description": "which kind of drink should be moved?",
-                                        "type": "boolean",
+                                        "type": "integer",
                                         "example": "1"
                                     },
                                     "quantity": {
